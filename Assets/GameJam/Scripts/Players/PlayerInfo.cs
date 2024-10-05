@@ -9,11 +9,14 @@ public class PlayerPropertes
     public int Strength;
     public int health;
     public int maxHealth;
+    public float shotSpeed;
+    public int maxAmmo;
 }
 
 public class PlayerInfo : MonoBehaviour,IDamageable
 {
     public PlayerPropertes playerPropertes;
+    public BaseAttack attack;
     public int health{get;set;}
     public TMP_Text HPtext;
     public TMP_Text Ammotext;
@@ -21,6 +24,8 @@ public class PlayerInfo : MonoBehaviour,IDamageable
 
     private void Start() {
         health = playerPropertes.maxHealth;
+        playerPropertes.shotSpeed = attack.ShootSpeed;
+        playerPropertes.maxAmmo = attack.AmmoAmount;
     }
 
     public void GetDamaged(int _damage)
@@ -36,6 +41,25 @@ public class PlayerInfo : MonoBehaviour,IDamageable
         }
         playerPropertes.health = health;
         HPtext.text = "Health:" + health;
+    }
+
+    public void Health_Up(int _amount)
+    {
+        health += _amount;
+        playerPropertes.health = health;
+        HPtext.text = "Health:" + health;
+    }
+
+    public void Shot_Speed_Up(float _amount)
+    {
+        playerPropertes.shotSpeed += _amount;
+        GetComponent<AttackCtrl>().UpdateShotSpeed();
+    }
+
+    public void Ammo_Up(int _amount)
+    {
+        playerPropertes.maxAmmo += _amount;
+        GetComponent<AttackCtrl>().UpdateMaxAmmo();
     }
 
     public void SetAmmoAmount(int _amount)

@@ -10,5 +10,6 @@ public abstract class BaseAttack : ScriptableObject {
     public int AmmoAmount;
     public int AmmoCost;
     public float ReloadingTime;
+    public string shotClipName;
     public abstract void Attack(Vector3 shootTrans,Quaternion playerTrans);
 }

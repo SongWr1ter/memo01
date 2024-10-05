@@ -166,5 +166,11 @@ public class Move : MonoBehaviour
         }
     }
     #endregion
-
+    public void SetGunActive(int active)
+    {
+        if(active == 0)
+            gun.gameObject.SetActive(false);
+        else
+            gun.gameObject.SetActive(true);
+    }
 }

@@ -14,4 +14,5 @@ public class GlobalResManager : SingleTon<GlobalResManager>
             return player;
         }
     }
+    public GameObject ExplosionPrefab;
 }

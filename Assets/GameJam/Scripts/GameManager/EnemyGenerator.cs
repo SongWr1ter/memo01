@@ -41,14 +41,14 @@ public class EnemyGenerator : MonoBehaviour
         {
             float x = Random.Range(-transform.localScale.x, transform.localScale.x);
             float y = Random.Range(-transform.localScale.y, transform.localScale.y);
-            Vector3 v = transform.position + transform.rotation * new Vector3(x, y, 0);
+            Vector3 v = GlobalResManager.Instance.Player.transform.position + transform.rotation * new Vector3(x, y, 0);
             return v;
         }
         else if (type == _AreaType.Circle)
         {
             Vector3 dir = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f),0).normalized;
             //对于圆来说，旋转和不旋转没啥区别，所以返回的pos不用应用rotation对它的改变了
-            return transform.position + dir * Random.Range(0, GetMaximumScale());
+            return GlobalResManager.Instance.Player.transform.position + dir * Random.Range(0, GetMaximumScale());
         }
 
         return transform.position;

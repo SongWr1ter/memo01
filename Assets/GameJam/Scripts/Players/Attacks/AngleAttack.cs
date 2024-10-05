@@ -7,5 +7,6 @@ public class AngleAttack : BaseAttack {
         GameObject bullet = ObjectPool.Instance.GetObject(BulletPrefab);
         bullet.transform.position = _shootPos;
         bullet.transform.rotation = Quaternion.identity * Quaternion.Euler(0,0,-90f) * rotation;
+        sSoundManager.PlayAudio(shotClipName);
     }
 }

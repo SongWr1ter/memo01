@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: FingerBullet
   m_EditorClassIdentifier: 
   baseDamage: 1
-  speed: 50
+  speed: 25
   deadTime: 2

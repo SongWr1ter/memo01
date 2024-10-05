@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: AngleAttack
   m_EditorClassIdentifier: 
   BulletPrefab: {fileID: 6500549610887173277, guid: 1f46b57fa9f073945b017fd62abde19e, type: 3}
-  ShootSpeed: 4
-  isAutomatic: 1
-  AmmoAmount: 24
+  ShootSpeed: 8
+  isAutomatic: 0
+  AmmoAmount: 999
   AmmoCost: 2
-  ReloadingTime: 3
+  ReloadingTime: 1
+  shotClipName: single_shot

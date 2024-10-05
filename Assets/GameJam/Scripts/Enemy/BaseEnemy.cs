@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEditor.Tilemaps;
 
 [Serializable]
 public class EnemyParamater
@@ -7,10 +8,12 @@ public class EnemyParamater
     public float speed;
     public float turnSpeed;
     public int health;
+    public bool invincible;
     public float attackDistance;
     public GameObject BulletPrefab;
     public float attackInterval;
     public int score;
+    public bool isRotate;
 }
 public class BaseEnemy : MonoBehaviour,IDamageable
 {
@@ -29,19 +32,21 @@ public class BaseEnemy : MonoBehaviour,IDamageable
         }
         EventRegister();
     }
-    [SerializeField]
     protected GameObject Target;
+    protected SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
     protected virtual void Start()
     {
         Target = GlobalResManager.Instance.Player;
         rigi = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     public int health {get;set;}
     Quaternion rotation = Quaternion.identity;
     // Update is called once per frame
     protected virtual void FixedUpdate()
     {
+        Flip();
         switch (curState)
         {
             case eState.Chase:
@@ -74,7 +79,6 @@ public class BaseEnemy : MonoBehaviour,IDamageable
     {
         Vector3 targetDir = Target.transform.position - transform.position;
         targetDir.z = 0;
-        Vector3 desiredForward = Vector3.RotateTowards(-transform.up,targetDir,paramater.turnSpeed * Time.deltaTime,0);
         rigi.velocity = targetDir.normalized * paramater.speed;
         /*条件转移判断*/
         if(health <= 0)//Dead
@@ -87,8 +91,7 @@ public class BaseEnemy : MonoBehaviour,IDamageable
             rigi.velocity = Vector3.zero;
             StateTranslator(eState.Attack);
         }
-        //rotation = Quaternion.LookRotation(desiredForward,Vector3.forward);
-        //transform.rotation *= rotation;
+        
     }
     protected float attackTime;
     protected void Attack()
@@ -152,8 +155,36 @@ public class BaseEnemy : MonoBehaviour,IDamageable
 
     public void GetDamaged(int _damage)
     {
+        if(paramater.invincible) {return; }
         health -= _damage;
     } 
+
+    protected void Flip()
+    {
+        Vector3 mstr2player = Target.transform.position - transform.position ;
+
+
+        //rotate
+        if (!paramater.isRotate)
+        {
+            float dot = Vector3.Dot(transform.right, mstr2player.normalized);
+            if (dot > 0)
+            {
+                spriteRenderer.flipX = false;
+            }
+            else
+            {
+                spriteRenderer.flipX = true;
+            }
+        }
+        else {
+            mstr2player.z = 0;
+            Vector3 desiredForward = Vector3.RotateTowards(transform.right, mstr2player, paramater.turnSpeed * Time.deltaTime, 0);
+            rotation = Quaternion.FromToRotation(transform.right, desiredForward);
+            transform.rotation *= rotation;
+        }
+        
+    }
 
     protected virtual void EventRegister()
     {
