@@ -5,6 +5,7 @@ public class GlobalResManager : SingleTon<GlobalResManager>
 {
     [SerializeField]
     private GameObject player;
+    public float maxDeleteDist;
     public GameObject Player{
         get{
             if(player == null)

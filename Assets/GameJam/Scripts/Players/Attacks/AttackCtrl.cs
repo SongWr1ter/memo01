@@ -52,6 +52,7 @@ public class AttackCtrl : MonoBehaviour
         }
     }
     private Move move;
+    private bool fin;
     private BaseAttack attack
     {
         get { return playerInfo.attack; }
@@ -76,6 +77,7 @@ public class AttackCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (fin) return;
         if (Input.GetKeyDown(KeyCode.R))
         {
             Reloading();
@@ -130,6 +132,21 @@ public class AttackCtrl : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        MessageCenter.AddListener(OnGameWin);
+    }
+
+    private void OnDisable()
+    {
+        MessageCenter.RemoveListner(OnGameWin);
+    }
+
+    void OnGameWin(CommonMessage msg)
+    {
+        if (msg.Mid != (int)MESSAGE_TYPE.WIN) return;
+        fin = true;
+    }
     void Shoot()
     {
         attack.Attack(shootTrans.position, shootTrans.rotation);

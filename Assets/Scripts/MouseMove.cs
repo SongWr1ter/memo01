@@ -11,7 +11,7 @@ public class MouseMove : MonoBehaviour
     public GameObject target;
     [Tooltip("为什么会有两个target呢?target是准心,lookAtTarget被镜头跟随")]
     public GameObject lookAtTarget;
-    private PlayerControl playerControl;
+    private Move move;
     bool isPressLShift;
     Vector3 curPlayerPos;
     Vector3 lastPlayerPos;
@@ -24,9 +24,9 @@ public class MouseMove : MonoBehaviour
         lookAtTarget.transform.position = transform.position;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        if(TryGetComponent<PlayerControl>(out playerControl))
+        if(TryGetComponent<Move>(out move))
         {
-            curPlayerPos = playerControl.transform.position;
+            curPlayerPos = move.transform.position;
             lastPlayerPos = curPlayerPos;
         }
     }
@@ -62,9 +62,9 @@ public class MouseMove : MonoBehaviour
 
         #region target跟随玩家物体移动
 
-        if(playerControl != null)
+        if(move != null)
         {
-            curPlayerPos = playerControl.transform.position;
+            curPlayerPos = move.transform.position;
             Vector3 dirOffset = curPlayerPos - lastPlayerPos;
             target.transform.position += dirOffset;
             // lookAtTarget.transform.position += dirOffset;

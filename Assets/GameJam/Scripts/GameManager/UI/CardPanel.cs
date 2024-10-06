@@ -35,33 +35,37 @@ public class CardPanel : SingleTon<CardPanel>
 
     public void Power_Up()
     {
-        Time.timeScale = 1.0f;
+
         GlobalResManager.Instance.Player.
         GetComponent<PlayerInfo>().playerPropertes.Strength++;//这种获取引用方式太傻逼了我再也不用了
-        toggle(false);
+        endChose();
     }
 
     public void Health_Up()
     {
-        Time.timeScale = 1.0f;
+
         GlobalResManager.Instance.Player.
         GetComponent<PlayerInfo>().Health_Up(1);
-        toggle(false);
+        endChose();
     }
 
     public void Shot_Speed_Up()
     {
-        Time.timeScale = 1.0f;
         GlobalResManager.Instance.Player.
         GetComponent<PlayerInfo>().Shot_Speed_Up(1f);
-        toggle(false);
+        endChose();
     }
 
     public void Ammo_UP()
     {
-        Time.timeScale = 1.0f;
         GlobalResManager.Instance.Player.
         GetComponent<PlayerInfo>().Ammo_Up(2);
+        endChose();
+    }
+
+    void endChose()
+    {
+        Time.timeScale = 1.0f;
         toggle(false);
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class Move : MonoBehaviour
@@ -38,10 +39,15 @@ public class Move : MonoBehaviour
     float _rollspeed;
     private Vector3 lastMov;
     #endregion
-
+    [Header("无限地图相关")]
+    public SpriteRenderer sprite;
+    [SerializeField]
+    private float offsetSpeed;
+    private Material _material;
     // Start is called before the first frame update
     void Start()
     {
+        _material = sprite.materials[0];
         weaponTrans = transform.GetChild(0);
         weaponAnim = weaponTrans.GetComponent<Animator>();
         moveAnim = GetComponent<Animator>();
@@ -119,10 +125,15 @@ public class Move : MonoBehaviour
             break;
             case State.Roll:
             rigi.velocity = rollDir.normalized * rollSpeed;
+
             break;
         }
-        
+        float offsetY = _material.GetFloat("_Horizontal");
+        _material.SetFloat("_Horizontal", rigi.velocity.y / offsetSpeed + offsetY);
+        float offsetX = _material.GetFloat("_Vertical");
+        _material.SetFloat("_Vertical", rigi.velocity.x / offsetSpeed + offsetX);
     }
+
 
     #region 动作,行动
     //角色y轴始终朝向鼠标 ---modified--> 让枪的X轴朝向目标而非玩家的&Flip
@@ -148,21 +159,37 @@ public class Move : MonoBehaviour
                 {
                     spriteRenderer.flipX = false;
                     gunSpriteRenderer.flipY = false;
-                    gun.localPosition = new Vector3(0.6f,gun.localPosition.y,0f);
+                    gun.localPosition = new Vector3(0.3f,gun.localPosition.y,0f);
                 }
                 else
                 {
                     spriteRenderer.flipX = true;
                     gunSpriteRenderer.flipY = true;
-                    gun.localPosition = new Vector3(-0.6f, gun.localPosition.y, 0f);
+                    gun.localPosition = new Vector3(-0.3f, gun.localPosition.y, 0f);
                 }
             }
         }else
         {
-            Vector3 gun2mouse = AimingTarget.position - transform.position;
-            float angle = Vector3.SignedAngle(transform.up, gun2mouse, Vector3.forward);
+            Vector3 gun2mouse = AimingTarget.position - gun.position;
+            gun2mouse.z = 0;
+            float angle = Vector3.SignedAngle(gun.right, gun2mouse, Vector3.forward);
             Quaternion quaternion = Quaternion.AngleAxis(angle,Vector3.forward);
             gun.rotation *= quaternion;
+            //计算Flip
+            Vector3 player2mouse = AimingTarget.position - transform.position;
+            float dot = Vector3.Dot(transform.right, player2mouse.normalized);
+            if (dot > 0)
+            {
+                spriteRenderer.flipX = false;
+                gunSpriteRenderer.flipY = false;
+                gun.localPosition = new Vector3(0.3f, gun.localPosition.y, 0f);
+            }
+            else
+            {
+                spriteRenderer.flipX = true;
+                gunSpriteRenderer.flipY = true;
+                gun.localPosition = new Vector3(-0.3f, gun.localPosition.y, 0f);
+            }
         }
     }
     #endregion
@@ -173,4 +200,5 @@ public class Move : MonoBehaviour
         else
             gun.gameObject.SetActive(true);
     }
+
 }

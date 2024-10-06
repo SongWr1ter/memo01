@@ -24,6 +24,7 @@ public class BaseEnemy : MonoBehaviour,IDamageable
     protected eState curState;
     protected Rigidbody2D rigi;
     protected void OnEnable() {
+
         curState = eState.Chase;
         health = paramater.health;
         if (GlobalResManager.isInitialize)
@@ -47,6 +48,7 @@ public class BaseEnemy : MonoBehaviour,IDamageable
     protected virtual void FixedUpdate()
     {
         Flip();
+        CheckDist();
         switch (curState)
         {
             case eState.Chase:
@@ -139,8 +141,7 @@ public class BaseEnemy : MonoBehaviour,IDamageable
     protected virtual void Dead()
     {
         //TODO: 死亡特效
-        rigi.velocity = Vector3.zero;
-        ObjectPool.Instance.PushObject(this.gameObject);
+        BodyCollect();
         MessageCenter.SendMessage(new CommonMessage()
         {
             Mid = (int)MESSAGE_TYPE.ADD_SCORE,
@@ -186,13 +187,40 @@ public class BaseEnemy : MonoBehaviour,IDamageable
         
     }
 
+    protected void CheckDist()
+    {
+        float d = Vector3.Distance(Target.transform.position, transform.position);
+        if (d >= GlobalResManager.Instance.maxDeleteDist)
+        {
+            BodyCollect();
+        }
+    }
+
+    void BodyCollect()
+    {
+        rigi.velocity = Vector3.zero;
+        ObjectPool.Instance.PushObject(this.gameObject);
+        MessageCenter.SendMessage(new CommonMessage
+        {
+            Mid = (int)MESSAGE_TYPE.ENEMY_DEAD
+        });
+    }
+
+    protected void OnGameWin(CommonMessage msg)
+    {
+        if (msg.Mid != (int)MESSAGE_TYPE.WIN) return;
+        //TODO: 死亡特效
+        BodyCollect();
+
+    }
+
     protected virtual void EventRegister()
     {
-
+        MessageCenter.AddListener(OnGameWin);
     }
 
     protected virtual void EventDeleter()
     {
-
+        MessageCenter.RemoveListner(OnGameWin);
     }
 }

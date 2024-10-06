@@ -9,6 +9,12 @@ public class BaseBullet : MonoBehaviour
     [SerializeField]
     protected bool canDamagePlayer=false;
     protected int charcDamage;
+    TrailRenderer trail;
+
+    protected void Awake()
+    {
+        trail = GetComponent<TrailRenderer>();
+    }
 
     protected void OnEnable() {
         baseDamage = info.baseDamage;
@@ -28,7 +34,7 @@ public class BaseBullet : MonoBehaviour
 
         deadtime += Time.deltaTime;
         if(deadtime >= deadTime) {
-            ObjectPool.Instance.PushObject(gameObject);
+            CollectGarbage();
             deadtime -= deadTime;
         }
     }
@@ -38,7 +44,7 @@ public class BaseBullet : MonoBehaviour
         if(other.CompareTag("Obstacle"))
         {
             //播放枪打到墙上的特效
-            Destroy(gameObject);
+            CollectGarbage();
             return;
         }
         if(other.CompareTag("Enemy") && !canDamagePlayer)
@@ -46,13 +52,23 @@ public class BaseBullet : MonoBehaviour
             //other.GetComponent<simpleFSM>().GetDamaged(transform.up);
             other.GetComponent<IDamageable>().GetDamaged(baseDamage + charcDamage);
             //Debug.Log("Hit Enemy;Damgage = "+ (baseDamage + charcDamage));
-            ObjectPool.Instance.PushObject(gameObject);
+            CollectGarbage();
             return;
         }
         if(other.CompareTag("Player") && canDamagePlayer)
         {
             other.GetComponent<IDamageable>().GetDamaged(baseDamage);
-            ObjectPool.Instance.PushObject(gameObject);
+            CollectGarbage();
         }
+    }
+
+    void CollectGarbage()
+    {
+        if (trail != null)
+        {
+            GetComponent<TrailRenderer>().Clear();
+        }
+        
+        ObjectPool.Instance.PushObject(gameObject);
     }
 }

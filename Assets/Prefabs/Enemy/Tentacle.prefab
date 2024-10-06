@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8085430860490060117}
   - component: {fileID: 8085430860490060122}
-  - component: {fileID: 8085430860490060123}
   - component: {fileID: 8085430860490060120}
   - component: {fileID: 8085430860490060121}
   - component: {fileID: 596579547262274688}
+  - component: {fileID: 5335257522492636544}
   m_Layer: 0
   m_Name: Tentacle
   m_TagString: Enemy
@@ -88,28 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8085430860490060123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8085430860490060126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0188bd8117f9c9c408502be8b00154c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  paramater:
-    speed: 2
-    turnSpeed: 5
-    health: 5
-    invincible: 0
-    attackDistance: 1.2
-    BulletPrefab: {fileID: 3997568321670046170, guid: bf7f92cb6227b754faaeb04dd86964fa, type: 3}
-    attackInterval: 1
-    score: 1
-    isRotate: 0
 --- !u!58 &8085430860490060120
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -144,7 +122,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.72
+  m_Radius: 0.9684179
 --- !u!50 &8085430860490060121
 Rigidbody2D:
   serializedVersion: 4
@@ -193,3 +171,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5335257522492636544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085430860490060126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18b914495fe6c6b4b9e25ce06012626d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paramater:
+    speed: 2
+    turnSpeed: 5
+    health: 5
+    invincible: 0
+    attackDistance: 1
+    BulletPrefab: {fileID: 3997568321670046170, guid: bf7f92cb6227b754faaeb04dd86964fa, type: 3}
+    attackInterval: 0.5
+    score: 1
+    isRotate: 0
+    maxDeleteDist: 10

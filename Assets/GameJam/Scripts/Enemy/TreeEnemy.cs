@@ -6,7 +6,7 @@ public class TreeEnemy : BaseEnemy
 {
     protected override void FixedUpdate()
     {
-        
+        CheckDist();
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D other)

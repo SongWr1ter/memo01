@@ -8,20 +8,22 @@ public class myGameManager : SingleTon<myGameManager>
     // Start is called before the first frame update
     void Start()
     {
-        MessageCenter.AddListener(OnGameOver);
+        MessageCenter.AddListener(OnGameOver); 
+        MessageCenter.AddListener(OnGameWin);
+
         Time.timeScale = 1.0f;
     }
 
     // Update is called once per frame
     private void Update() {
-        if(isGameOver)
-        {
-            if(Input.GetKeyDown(KeyCode.R))
-            {
-                ObjectPool.Instance.DequeueAll();
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
-        }
+        //if(isGameOver)
+        //{
+        //    if(Input.GetKeyDown(KeyCode.R))
+        //    {
+        //        ObjectPool.Instance.DequeueAll();
+        //        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //    }
+        //}
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             #if UNITY_EDITOR
@@ -37,6 +39,7 @@ public class myGameManager : SingleTon<myGameManager>
     {
         base.OnDestroy();
         MessageCenter.RemoveListner(OnGameOver);
+        MessageCenter.RemoveListner(OnGameWin);
     }
 
     public void OnGameOver(CommonMessage msg)
@@ -45,6 +48,14 @@ public class myGameManager : SingleTon<myGameManager>
         Time.timeScale = 0.001f;
         isGameOver = true;
     }
+
+    public void OnGameWin(CommonMessage msg)
+    {
+        if(msg.Mid != (int)MESSAGE_TYPE.WIN) return;
+        Time.timeScale = 0.001f;
+        isGameOver = true;
+    }
+
 
     public int getCurrentLevel()
     {

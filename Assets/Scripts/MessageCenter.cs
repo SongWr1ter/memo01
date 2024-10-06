@@ -7,11 +7,8 @@ public enum MESSAGE_TYPE
     GAME_RESTART,
     ADD_SCORE,
     GAME_OVER,
-    TIME_STOP_ON,
-    TIME_STOP_OFF,
-    LEVEL_CLEAR,
-    STAGE_CLEAR,
-    MOV_nSTAGE
+    WIN,
+    ENEMY_DEAD
 }
 public struct CommonMessage
 {

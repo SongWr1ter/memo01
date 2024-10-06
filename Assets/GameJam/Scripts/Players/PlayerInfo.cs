@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using TMPro;
 using UnityEngine.UI;
+using DG.Tweening;
 
 [Serializable]
 public class PlayerPropertes
@@ -21,6 +22,7 @@ public class PlayerInfo : MonoBehaviour,IDamageable
     public TMP_Text HPtext;
     public TMP_Text Ammotext;
     public Image reloadingImage;
+    private bool invicible;
 
     private void Start() {
         health = playerPropertes.maxHealth;
@@ -30,6 +32,7 @@ public class PlayerInfo : MonoBehaviour,IDamageable
 
     public void GetDamaged(int _damage)
     {
+        if(invicible) return;
         health -= _damage;
         if(health <= 0)
         {
@@ -37,8 +40,17 @@ public class PlayerInfo : MonoBehaviour,IDamageable
             {
                 Mid = (int)MESSAGE_TYPE.GAME_OVER
             });
+            gameObject.SetActive(false);
             return;
         }
+        invicible = true;
+        GetComponent<SpriteRenderer>().DOColor(Color.red,.125f).SetLoops(2, LoopType.Yoyo);
+        GetComponent<SpriteRenderer>().DOFade(0.3f, 0.25f).SetLoops(8,LoopType.Yoyo).OnComplete(() =>
+        {
+            invicible = false;
+            GetComponent<Collider2D>().enabled = false;
+            GetComponent<Collider2D>().enabled = true;
+        });
         playerPropertes.health = health;
         HPtext.text = "Health:" + health;
     }
