@@ -47,7 +47,7 @@ public class EnemyGenerator : MonoBehaviour
             float x = Random.Range(-transform.localScale.x, transform.localScale.x);
             float y = Random.Range(-transform.localScale.y, transform.localScale.y);
             Vector3 v = GlobalResManager.Instance.Player.transform.position + transform.rotation * new Vector3(x, y, 0);
-            Vector3 dir = (v - transform.position).normalized;
+            Vector3 dir = (v - GlobalResManager.Instance.Player.transform.position).normalized;
             v = v + dir * generatePosOffset;
             return v;
         }

@@ -5,7 +5,7 @@ using TMPro;
 
 public class Clocker : MonoBehaviour
 {
-    private const float MAX_WAITING_TIME = 600f;
+    private const float MAX_WAITING_TIME = 1201f;
     [SerializeField]
     private float speed = 1.0f;
     private TMP_Text text;

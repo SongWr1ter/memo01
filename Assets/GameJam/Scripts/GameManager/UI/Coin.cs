@@ -22,7 +22,7 @@ public class Coin : MonoBehaviour
     {
         if(msg.Mid != (int)MESSAGE_TYPE.ADD_SCORE) return;
         score += msg.intParam;
-        text.text = "Exp:" + score;
+        text.text = "Exp:" + score + "/" + maxScore;
         if(scoreChecker() == 1)
         {
             onScoreFull();
